@@ -28,12 +28,12 @@ let win: BrowserWindow | null
 
 function createWindow() {
   win = new BrowserWindow({
-    icon: path.join(process.env.VITE_PUBLIC, 'electron-vite.svg'),
+    icon: path.join(process.env.VITE_PUBLIC, '../public/assets/vault-logo-light.png'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.mjs'),
     },
-    width: 1500,
-    height: 1000
+    width: 1200,
+    height: 800
   })
 
   // Test active push message to Renderer-process.
