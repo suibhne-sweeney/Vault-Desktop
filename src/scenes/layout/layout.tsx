@@ -1,7 +1,8 @@
 import React, { ReactNode } from "react";
 import Navbar from "./navbar";
 import Sidebar from "./sidebar";
-import PlayBar from "./playbar/index";
+import PlayBar from "./playbar";
+import { Toaster } from "@/components/ui/toaster";
 
 interface LayoutProps {
   children: ReactNode;
@@ -19,6 +20,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           <div className="flex-1 overflow-y-auto custom-scrollbar">
             {children}
           </div>
+          <Toaster />
         </main>
       </div>
       <PlayBar />

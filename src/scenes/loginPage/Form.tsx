@@ -33,7 +33,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import imageLogin from "/assets/loginImage.png";
-import imageSignup from "../../../public/assets/signupLogin.jpg"
+import imageSignup from "/assets/signupLogin.jpg"
 import HyperText from "@/components/magicui/hyper-text";
 import { FileUpload } from "@/components/aceternityui/file-upload";
 
@@ -48,14 +48,14 @@ const registerSchema = z.object({
   lastName: z.string()
     .min(2, { message: "Last name must be at least 2 characters long." })
     .max(30, { message: "Last name must be less than 30 characters long." }),
-  dateOfBirth: z.coerce.date(),
+  dateOfBirth: z.coerce.date(), // i need to make it so it checks if your acc 18 years of age lol
   gender: z.enum(["Male", "Female", "None"], {
     message: "Gender must be one of the following: Male, Female, None."
   }),
   picture: z.string()
 });
 
-// Define schema for login
+// define schema for login
 const loginSchema = registerSchema.pick({
   email: true,
   password: true,
@@ -69,6 +69,7 @@ export default function AuthenticateForm() {
     const isRegister = pageType === "register";
     const schema = isLogin ? loginSchema : registerSchema;
     const [step, setStep] = useState(0)
+    const SERVER_URI = import.meta.env.VITE_SERVER_URI;
 
     const [files, setFiles] = useState<File[]>([]);
     const handleFileUpload = (files: File[]) => {
@@ -90,7 +91,7 @@ export default function AuthenticateForm() {
     });
 
     const login = async (values: z.infer<typeof schema>) => {
-      const loggedInResponse = await fetch("http://localhost:3001/api/auth/login", {
+      const loggedInResponse = await fetch(`${SERVER_URI}/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(values),
@@ -117,7 +118,7 @@ export default function AuthenticateForm() {
       formData.append("picture", files[0]);
       formData.append("picturePath", files[0].name);
 
-      const savedUserResponse = await fetch("http://localhost:3001/api/auth/regiseter",{
+      const savedUserResponse = await fetch(`${SERVER_URI}/api/auth/regiseter`,{
         method: "POST",
         body: formData,
       });
@@ -135,7 +136,7 @@ export default function AuthenticateForm() {
 	return (
     <>
       {isRegister && (
-        <div className="w-full h-full lg:grid lg:min-h-[901px] lg:grid-cols-2 xl:min-h-[936px]">
+        <div className="w-full h-screen lg:grid lg:grid-cols-2">
           <div className=" relative hidden bg-muted lg:block">
             <img
               src={imageSignup}
@@ -310,7 +311,7 @@ export default function AuthenticateForm() {
       )}
       
       {isLogin && (
-        <div className="w-full h-full lg:grid lg:min-h-[901px] lg:grid-cols-2 xl:min-h-[936px]">
+        <div className="w-full h-screen lg:grid lg:grid-cols-2">
           <div className="flex items-center justify-center py-12">
             <div className="mx-auto grid w-[350px] gap-6">
               <div className="grid gap-2 text-center">
